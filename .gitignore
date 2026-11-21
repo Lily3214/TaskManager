@@ -1,0 +1,13 @@
+# Visual Studio temporary files
+.vs/
+
+# Compiled files
+bin/
+obj/
+
+# User-specific settings
+*.user
+*.suo
+
+# Test results
+TestResults/
