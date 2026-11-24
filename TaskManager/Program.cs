@@ -17,6 +17,25 @@ Console.WriteLine("Hello, " + userName + "!");
 // Create an object
 TaskManagerMethod manager = new TaskManagerMethod();
 
+manager.AddTask("Learn Variables");
+manager.AddTask("Learn Methods");
+manager.AddTask("Learn Classes");
+
+TaskItem? task = manager.FindTaskById(2);
+if (task != null) {
+    Console.WriteLine(task.Name);
+}
+else
+{
+    Console.WriteLine("Task not found.");
+}
+
+manager.UpdateTask(2, "Practice CRUD");
+manager.ShowTasks();
+
+manager.DeleteTask(2);
+manager.ShowTasks();
+
 bool isRunning = true;
 
 // Repeat the menu until the user exits
@@ -56,12 +75,7 @@ while (isRunning)
             break;
 
         case "5":
-            isRunning = false;
-            Console.WriteLine("Goodbye!");
-            break;
-
-        case "6":
-            Console.Write("Enter task name to search: ");
+            Console.WriteLine("Enter task name to search: ");
             string? searchName = Console.ReadLine();
 
             if (!string.IsNullOrWhiteSpace(searchName))
@@ -79,22 +93,70 @@ while (isRunning)
             }
             else
             {
-                Console.WriteLine("Please enter a task name.");
+                Console.WriteLine("Task name cannot be empty.");
             }
             break;
 
-        case "7":
-            Console.WriteLine("Enter task ID to complete: ");
-            string? input = Console.ReadLine();
+        // UPDATE: Complete task
+        case "6":
+            Console.Write("Enter task ID to complete: ");
+            string? completeInput = Console.ReadLine();
 
-            if (int.TryParse(input, out int taskId))
+            if (int.TryParse(completeInput, out int completeId))
             {
-                manager.CompleteTask(taskId);
+                manager.CompleteTask(completeId);
             }
             else
             {
                 Console.WriteLine("Invalid task ID.");
             }
+            break;
+
+        // UPDATE: Rename task
+
+        case "7":
+            Console.WriteLine("Enter task ID to complete: ");
+            string? updateInput = Console.ReadLine();
+
+            if (int.TryParse(updateInput, out int updateId))
+            {
+                Console.Write("Enter new task name: ");
+                string? newName = Console.ReadLine();
+
+                if (!string.IsNullOrWhiteSpace(newName))
+                {
+                    manager.UpdateTask(updateId, newName);
+                }
+                else
+                {
+                    Console.WriteLine("Task name cannot be empty.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid task ID.");
+            }
+            break;
+
+        // DELETE
+        case "8":
+            Console.Write("Enter task ID to delete: ");
+            string? deleteInput = Console.ReadLine();
+
+            if (int.TryParse(deleteInput, out int deleteId))
+            {
+                manager.DeleteTask(deleteId);
+            }
+            else
+            {
+                Console.WriteLine("Invalid task ID.");
+            }
+            break;
+
+        // EXIT
+        case "9":
+            isRunning = false;
+            Console.WriteLine("Goodbye!");
             break;
 
         default:

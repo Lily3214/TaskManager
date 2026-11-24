@@ -11,18 +11,25 @@ namespace TaskManager
 		private int nextId = 1;
 
 		// Constructur
-		public TaskManagerMethod() {
+		public TaskManagerMethod()
+		{
 			Console.WriteLine("Task Manager initialized.");
 		}
 		// Add a task
 		public void AddTask(string name)
 		{
-			TaskItem task = new TaskItem(nextId, name);
+			if (TaskExists(name))
+			{
+				Console.WriteLine("Task already exists!");
+				return;
+			}
 
-			tasks.Add(task);
+			TaskItem newTask = new TaskItem(nextId, name);
+
+			tasks.Add(newTask);
 			nextId++;
 
-			Console.WriteLine("Task added!");
+			Console.WriteLine("Task added successfully!");
 		}
 
 		// Display all tasks
@@ -36,9 +43,67 @@ namespace TaskManager
 
 			Console.WriteLine("Your Tasks:");
 
-			foreach (TaskItem task in tasks) {
-				Console.WriteLine(task.Name);
+			foreach (TaskItem task in tasks)
+			{
+				Console.WriteLine($"{task.Id}. {task.Name} - Completed: {task.IsCompleted}");
 			}
+		}
+
+        // READ: Find a task by ID
+        public TaskItem? FindTaskById(int id)
+        {
+            foreach (TaskItem task in tasks)
+            {
+                if (task.Id == id)
+                {
+                    return task;
+                }
+            }
+
+            return null;
+        }
+
+        // UPDATE: Change a task's name
+        public void UpdateTask(int id, string newName)
+		{
+			TaskItem? task = FindTaskById(id);
+			if (task == null)
+			{
+				Console.WriteLine("Task not found.");
+				return;
+			}
+			task.Name = newName;
+
+			Console.WriteLine("Task updated successfully.");
+		}
+
+		// UPDATE: Complete a task
+		public void CompleteTask(int id)
+		{
+			TaskItem? task = FindTaskById(id);
+
+			if (task == null)
+			{
+				Console.WriteLine("Task not found.");
+				return;
+			}
+
+			task.MarkCompleted();
+
+			Console.WriteLine("Task completed!");
+		}
+
+		// DELETE: Remove a task
+		public void DeleteTask(int id)
+		{
+			TaskItem? task = FindTaskById(id);
+			if (task == null)
+			{
+				Console.WriteLine("Task not found.");
+				return;
+			}
+			tasks.Remove(task);
+			Console.WriteLine("Task deleted successfully!");
 		}
 
 		// Return total number of tasks
@@ -67,10 +132,7 @@ namespace TaskManager
 		// Display task numbers
 		public void DisplayTaskNumbers()
 		{
-			foreach (TaskItem task in tasks)
-			{
-				Console.WriteLine($"{task.Id}. {task.Name}");
-			}
+			ShowTasks();
 		}
 
 		// Check whether a task exists
@@ -87,20 +149,6 @@ namespace TaskManager
 				}
 			}
 			return false;
-		}
-
-		// Complete a task by ID
-		public void CompleteTask(int id)
-		{
-			foreach (TaskItem task in tasks)
-			{
-				if (task.Id == id) {
-					task.IsCompleted = true;
-					Console.WriteLine("Task completed!");
-					return;
-				}
-			}
-			Console.WriteLine("Task not found.");
 		}
 	}
 }

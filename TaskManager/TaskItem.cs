@@ -2,7 +2,7 @@
 namespace TaskManager
 {
 	public class TaskItem
-    {
+	{
 		// Properties
 		public int Id { get; set; }
 		public string Name { get; set; }
@@ -14,6 +14,10 @@ namespace TaskManager
 			Id = id;
 			Name = name;
 			IsCompleted = false;
+		}
+		public void MarkCompleted()
+		{
+			IsCompleted = true;
 		}
 	}
 }
